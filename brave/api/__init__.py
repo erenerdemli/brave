@@ -17,7 +17,7 @@ class RestApi(object):
     '''
 
     def __init__(self, session):
-        app = Sanic()
+        app = Sanic(name='Brave Rest Api')
         app.config.KEEP_ALIVE = False
         session.rest_api = self
         self.webockets_handler = brave.api.websockets_handler.WebsocketsHandler(session)
@@ -39,7 +39,7 @@ class RestApi(object):
 
         @app.middleware('request')
         async def give_session_to_each_route_handler(request):
-            request['session'] = session
+            request.ctx.session = session
 
         @app.middleware('request')
         async def ensure_objects_always_provided_in_json(request):
